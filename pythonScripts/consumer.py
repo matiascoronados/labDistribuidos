@@ -5,7 +5,7 @@ import pymongo
 from pymongo import MongoClient
 from pymongo import *
 
-client = MongoClient('localhost:27017',authSource='reddit')#datos de conexion de bd
+client = MongoClient('34.68.42.248:27017',authSource='reddit',username='admin',password='canito123')#datos de conexion de bd
 db = client["reddit"]#asi se accede a una bd
 commentsCollection = db["comments"]#asi se accede a una coleccion
 
@@ -23,16 +23,30 @@ try:
         print(comment.value['postTitle'])
         commentsCollection.insert_one(
         {    
-            "commentId": comment.value['commentId'],
+            "id": comment.value['commentId'],
             "commentAuthor": comment.value['commentAuthor'], 
             "commentBody": comment.value['commentBody'], 
-            "postId": comment.value['postId'],
-            "postAuthor": comment.value['postAuthor'], 
-            "postTitle": comment.value['postAuthor'],
-            "postScore": comment.value['postScore'], 
-            "postLink": comment.value['postLink'], 
-            "postNumComments": comment.value['postNumComments'], 
-            "subredditTitle": comment.value['subredditTitle']
+            "post":{
+            "Id": comment.value['postId'],
+            "Author": comment.value['postAuthor'], 
+            "Title": comment.value['postAuthor'],
+            "Score": comment.value['postScore'], 
+            "Link": comment.value['postLink'], 
+            "NumComments": comment.value['postNumComments']
+            },
+            
+            "subredditTitle": comment.value['subredditTitle'],
+            "stats":{
+                "uppercase":0,
+                "lowercase":0,
+                "words":0,
+                "vocals":0,
+                "consonants":0,
+                "stopwords":0,
+                "without_stops":""
+            },
+        
+            
         })
 except expression as identifier:
     print('error')
