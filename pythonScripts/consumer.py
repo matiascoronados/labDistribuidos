@@ -49,7 +49,7 @@ def upperLetters(comment):
 
 
 ## MAIN ##
-
+#nltk.download('stopwords')
 nltk_stopwords = set(stopwords.words('english'))
 client = MongoClient('34.68.42.248:27017',authSource='reddit',username='admin',password='canito123')
 db = client["reddit"]
@@ -77,7 +77,7 @@ try:
             "post":{
                 "Id": comment.value['postId'],
                 "Author": comment.value['postAuthor'], 
-                "Title": comment.value['postAuthor'],
+                "Title": comment.value['postTitle'],
                 "Score": comment.value['postScore'], 
                 "Link": comment.value['postLink'], 
                 "NumComments": comment.value['postNumComments']

@@ -3,6 +3,7 @@ from json import dumps
 import praw
 from pretty import pprint
 from langdetect import detect
+from random import randrange
 
 
 reddit = praw.Reddit(client_id="MBLqAl5yrZENtA",
@@ -42,4 +43,4 @@ for comment in comments:
                 # Info de Subreddit(Topico o tema)
                 "subredditTitle" : str(comment.subreddit.title)     
             },
-            partition=0)
+            partition=randrange(3))
