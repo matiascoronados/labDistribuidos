@@ -31,7 +31,7 @@ def upperLetters(comment):
 
     words =[]
 
-        #print(comment["commentBody"])
+    #print(comment["commentBody"])
     for letter in comment:
         if(letter.isupper()):
             upper+=1
@@ -48,10 +48,13 @@ def upperLetters(comment):
     return upper,lower,vowel,consonant,stops, count_stopwords,text_without_stopword, count_words
 
 
+## MAIN ##
+
 nltk_stopwords = set(stopwords.words('english'))
-client = MongoClient('34.68.42.248:27017',authSource='reddit',username='admin',password='canito123')#datos de conexion de bd
-db = client["reddit"]#asi se accede a una bd
-commentsCollection = db["comments"]#asi se accede a una coleccion
+client = MongoClient('34.68.42.248:27017',authSource='reddit',username='admin',password='canito123')
+db = client["reddit"]
+commentsCollection = db["comments"]
+
 try:
     consumer = KafkaConsumer(
    'Temas',
@@ -63,7 +66,9 @@ try:
 
     for comment in consumer:
         print(comment.value['postTitle'])
+
         upper,lower,vowel,consonant,stops, count_stopwords,text_without_stopword,count_words = upperLetters(comment.value['commentBody'])
+        
         commentsCollection.insert_one(
         {    
             "id": comment.value['commentId'],
@@ -87,9 +92,7 @@ try:
                 "consonants":consonant,
                 "stopwords":count_stopwords,
                 "without_stops":text_without_stopword
-            },
-        
-            
+            },     
         })
 except expression as identifier:
     print('error')
