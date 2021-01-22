@@ -29,6 +29,7 @@ CREATE TABLE comments(
     id_post VARCHAR(20),
     comment_author VARCHAR(30) NOT NULL,
     comment_body VARCHAR(200) NOT NULL,
+    sentiment_value DECIMAL,
     CONSTRAINT fk_post
         FOREIGN KEY(id_post) 
             REFERENCES posts(id_post)
