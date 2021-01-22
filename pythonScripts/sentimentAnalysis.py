@@ -4,6 +4,7 @@ from pymongo import MongoClient
 from pymongo import *
 from pretty import pprint
 import nltk
+import psycopg2
 def analysisScore(text):
     #print(text['without_stops'])
     print("comentario")
@@ -18,10 +19,10 @@ def analysisScore(text):
         
         #mean = mean(sentence.sentiment.polarity)
     promedio = sumCount / dataCount
-    print(promedio)   
+    #print(promedio) 
+    return promedio  
         
     
-
 nltk.download('punkt')
 nltk.download('averaged_perceptron_tagger')
 nltk.download('brown')
@@ -30,7 +31,37 @@ client = MongoClient('34.68.42.248', username='admin', password='canito123', aut
 db = client["reddit"]#asi se accede a una bd
 collection = db["comments"]#asi se accede a una coleccion
 
+conn = psycopg2.connect(database='reddit', user='postgres',password='canito123', host='34.121.166.27', port= '55432');
+
+
+#Setting auto commit false
+conn.autocommit = True
+#Creating a cursor object using the cursor() method
+cursor = conn.cursor()
+
+#cursor.execute("INSERT INTO topics(id_topic,topic_title) VALUES ('1','hola')")
+
+
+cursor.execute("SELECT %s FROM topics WHERE id_topic=%s",(1,2))
+a = cursor.fetchone()
+print(a)
+
+
 dataDB = collection.find()
-for comment in dataDB:
+
+cursor.close()
+conn.close()
+
+
+"""for comment in dataDB:
     #print(comment)
-    analysisScore(comment['stats'])
+    sentimentValue = analysisScore(comment['stats'])
+
+    #a = cursor.execute("SELECT EXISTS(SELECT 1 FROM topics WHERE topic_title="+comment['subredditTitle']+")")
+    a = cursor.execute("SELECT 1 FROM topics WHERE id_topic=1")
+
+    print(a)"""
+    
+
+
+
