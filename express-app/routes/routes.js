@@ -2,11 +2,11 @@ const { Router } = require('express');
 const router = Router();
 
 
-const {getPermisos,createPermiso} = require('../controllers/controller')
+const {getAllComments,getAllPosts,getAllTopics} = require('../controllers/controller')
 
-
-//router.get('/permisos',getPermisos)
-//router.post('/createPermiso',createPermiso)
+router.get('/comments',getAllComments)
+router.get('/posts',getAllPosts)
+router.get('/topics',getAllTopics)
 
 
 module.exports = router;
