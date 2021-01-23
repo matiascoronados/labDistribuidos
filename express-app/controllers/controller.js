@@ -34,6 +34,87 @@ const getAllTopics = (request,response) => {
     })
 }
 
+const getPostsWithMoreComments = (request,response) => {
+    pool.query('SELECT posts.id_post,posts.post_title,posts.post_numcomments FROM posts ORDER BY posts.post_numcomments DESC',(error,results) =>{
+        if(error){
+            throw error
+        }
+        response.status(200).send(results);
+    })
+}
+
+const getTopicsWithMoreComments = (request,response) => {
+    pool.query('SELECT topics.id_topic,topics.topic_title, SUM(posts.post_numcomments) AS cantidad_comentarios FROM topics LEFT JOIN posts ON topics.id_topic = posts.id_topic GROUP BY topics.id_topic ORDER BY cantidad_comentarios DESC',(error,results) =>{
+        if(error){
+            throw error
+        }
+        response.status(200).send(results);
+    })
+}
+
+const getTopicsWithMorePost = (request,response) => {
+    pool.query('SELECT topics.id_topic,topics.topic_title, COUNT(*) AS cantidad_posts FROM topics LEFT JOIN posts ON topics.id_topic = posts.id_topic GROUP BY topics.id_topic ORDER BY cantidad_posts DESC',(error,results) =>{
+        if(error){
+            throw error
+        }
+        response.status(200).send(results);
+    })
+}
+
+const getScoreFromTopic = (request,response) => {
+    pool.query('SELECT topics.id_topic,topics.topic_title, SUM(posts.post_score) AS scorePost FROM topics LEFT JOIN posts ON topics.id_topic = posts.id_topic GROUP BY topics.id_topic ORDER BY scorePost DESC',(error,results) =>{
+        if(error){
+            throw error
+        }
+        response.status(200).send(results);
+    })
+}
+
+const getScoreFromPost = (request,response) => {
+    pool.query('SELECT * FROM posts ORDER BY posts.post_score DESC',(error,results) =>{
+        if(error){
+            throw error
+        }
+        response.status(200).send(results);
+    })
+}
+
+const getPositivePost = (request,response) => {
+    pool.query('SELECT posts.id_post, posts.post_title, COUNT(*) AS cantidad_comentarios ,AVG(comments.sentiment_value) AS sentiment FROM posts LEFT JOIN comments ON posts.id_post = comments.id_post GROUP BY posts.id_post ORDER BY sentiment DESC LIMIT 10',(error,results) =>{
+        if(error){
+            throw error
+        }
+        response.status(200).send(results);
+    })
+}
+
+
+const getNegativePost = (request,response) => {
+    pool.query('SELECT posts.id_post, posts.post_title, COUNT(*) AS cantidad_comentarios ,AVG(comments.sentiment_value) AS sentiment FROM posts LEFT JOIN comments ON posts.id_post = comments.id_post GROUP BY posts.id_post ORDER BY sentiment ASC LIMIT 10',(error,results) =>{
+        if(error){
+            throw error
+        }
+        response.status(200).send(results);
+    })
+}
+
+const getPositiveTopic = (request,response) => {
+    pool.query('SELECT topics.id_topic, topics.topic_title, AVG(comments.sentiment_value) AS sentiment FROM topics,posts,comments WHERE topics.id_topic = posts.id_topic AND posts.id_post = comments.id_post GROUP BY topics.id_topic ORDER BY sentiment DESC LIMIT 10',(error,results) =>{
+        if(error){
+            throw error
+        }
+        response.status(200).send(results);
+    })
+}
+
+const getNegativeTopic = (request,response) => {
+    pool.query('SELECT topics.id_topic, topics.topic_title, AVG(comments.sentiment_value) AS sentiment FROM topics,posts,comments WHERE topics.id_topic = posts.id_topic AND posts.id_post = comments.id_post GROUP BY topics.id_topic ORDER BY sentiment ASC LIMIT 10',(error,results) =>{
+        if(error){
+            throw error
+        }
+        response.status(200).send(results);
+    })
+}
 
 
 //Exportar Funciones
@@ -41,5 +122,14 @@ const getAllTopics = (request,response) => {
 module.exports={
     getAllComments,
     getAllPosts,
-    getAllTopics
+    getAllTopics,
+    getPostsWithMoreComments,
+    getTopicsWithMoreComments,
+    getTopicsWithMorePost,
+    getScoreFromTopic,
+    getScoreFromPost,
+    getPositivePost,
+    getNegativePost,
+    getPositiveTopic,
+    getNegativeTopic
 }
