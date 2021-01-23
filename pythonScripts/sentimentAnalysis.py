@@ -2,9 +2,10 @@ from textblob import TextBlob
 import pymongo
 from pymongo import MongoClient
 from pymongo import *
-from pretty import pprint
 import nltk
 import psycopg2
+
+
 def analysisScore(text):
     #print(text['without_stops'])
     #print("comentario")
@@ -46,43 +47,55 @@ dataDB = collection.find()
 
 for comment in dataDB:
 
-
+    
     # Variables 
-
     sentimentValue = analysisScore(comment['stats'])
-    aux=comment['post']['Title'].replace("'","")
-    cursor.execute("SELECT EXISTS(SELECT 1 FROM topics WHERE topic_title='"+aux+"')")
+    topic_title = comment['subredditTitle'].replace("'","")[0:499]
+    post_title = comment['post']['Title'].replace("'","")[0:499]
+    post_author = comment['post']['Author'].replace("'","")[0:29]
+    comment_author = comment['commentAuthor'].replace("'","")[0:29]
+    comment_body = comment['commentBody'].replace("'","")[0:599]
+
+    cursor.execute("SELECT EXISTS(SELECT 1 FROM topics WHERE topic_title='"+topic_title+"')")
     queryTopicExist = cursor.fetchone()[0]
 
 
     if(queryTopicExist):
         print("Si esta")
+        cursor.execute("SELECT EXISTS(SELECT 1 FROM posts WHERE id_post='"+comment['post']['Id']+"')")
+        queryPostExist = cursor.fetchone()[0]
 
-        #cursor.execute("SELECT id_topic FROM topics WHERE topic_title='"+comment['subredditTitle']+"'")
-        #idTopic = cursor.fetchone()[0]
-        #print(idTopic)
-        
+        #Se verifica si existe el post
+        if(not queryPostExist):
+            #Se obtiene el ID del topico
+            cursor.execute("SELECT id_topic FROM topics WHERE topic_title = '"+topic_title+"'")
+            id_topic = cursor.fetchone()[0]
+            #Se crea el post
+            cursor.execute("""INSERT INTO posts (id_post, id_topic, post_title, post_author, post_score, post_link, post_numcomments) 
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)""", 
+                    (comment['post']['Id'], id_topic, post_title, post_author, comment['post']['Score'], comment['post']['Link'], comment['post']['NumComments']))
+
+        #Se agrega el comentario
+        cursor.execute("""INSERT INTO comments(id_comment, id_post, comment_author, comment_body, sentiment_value) 
+                VALUES (%s, %s, %s, %s, %s)""", 
+                (comment['id'], comment['post']['Id'], comment_author, comment_body, sentimentValue))
 
     else:
         print("No esta")
 
         # Insertar Topico
-        cursor.execute("INSERT INTO topics(id_topic,topic_title) VALUES (DEFAULT,'"+comment['subredditTitle'].replace("'","")+"') RETURNING id_topic")
+        cursor.execute("INSERT INTO topics(id_topic,topic_title) VALUES (DEFAULT,'"+topic_title+"') RETURNING id_topic")
         id_topic = cursor.fetchone()[0]
-        #print(id_topic)
-
-        aux=comment['post']['Title'].replace("'","")
-        aux=aux[0:500]
-        print(aux)
+ 
         # Insertar Post
         cursor.execute("""INSERT INTO posts (id_post, id_topic, post_title, post_author, post_score, post_link, post_numcomments) 
                 VALUES (%s, %s, %s, %s, %s, %s, %s)""", 
-                (comment['post']['Id'], id_topic, aux, comment['post']['Author'], comment['post']['Score'], comment['post']['Link'], comment['post']['NumComments']))
+                (comment['post']['Id'], id_topic, post_title, post_author, comment['post']['Score'], comment['post']['Link'], comment['post']['NumComments']))
 
         # Insertar Comentario
         cursor.execute("""INSERT INTO comments(id_comment, id_post, comment_author, comment_body, sentiment_value) 
                 VALUES (%s, %s, %s, %s, %s)""", 
-                (comment['post']['Id'], comment['post']['Id'], comment['commentAuthor'], comment['commentBody'][0:500], sentimentValue))
+                (comment['id'], comment['post']['Id'], comment_author, comment_body, sentimentValue))
 
 cursor.close()
 conn.close()
