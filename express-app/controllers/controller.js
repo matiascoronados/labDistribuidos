@@ -35,7 +35,7 @@ const getAllTopics = (request,response) => {
 }
 
 const getPostsWithMoreComments = (request,response) => {
-    pool.query('SELECT posts.id_post,posts.post_title,posts.post_numcomments FROM posts ORDER BY posts.post_numcomments DESC',(error,results) =>{
+    pool.query('SELECT posts.id_post,posts.post_title,posts.post_numcomments FROM posts ORDER BY posts.post_numcomments DESC LIMIT 10',(error,results) =>{
         if(error){
             throw error
         }
@@ -44,7 +44,7 @@ const getPostsWithMoreComments = (request,response) => {
 }
 
 const getTopicsWithMoreComments = (request,response) => {
-    pool.query('SELECT topics.id_topic,topics.topic_title, SUM(posts.post_numcomments) AS cantidad_comentarios FROM topics LEFT JOIN posts ON topics.id_topic = posts.id_topic GROUP BY topics.id_topic ORDER BY cantidad_comentarios DESC',(error,results) =>{
+    pool.query('SELECT topics.id_topic,topics.topic_title, SUM(posts.post_numcomments) AS cantidad_comentarios FROM topics LEFT JOIN posts ON topics.id_topic = posts.id_topic GROUP BY topics.id_topic ORDER BY cantidad_comentarios DESC LIMIT 10',(error,results) =>{
         if(error){
             throw error
         }
@@ -53,7 +53,7 @@ const getTopicsWithMoreComments = (request,response) => {
 }
 
 const getTopicsWithMorePost = (request,response) => {
-    pool.query('SELECT topics.id_topic,topics.topic_title, COUNT(*) AS cantidad_posts FROM topics LEFT JOIN posts ON topics.id_topic = posts.id_topic GROUP BY topics.id_topic ORDER BY cantidad_posts DESC',(error,results) =>{
+    pool.query('SELECT topics.id_topic,topics.topic_title, COUNT(*) AS cantidad_posts FROM topics LEFT JOIN posts ON topics.id_topic = posts.id_topic GROUP BY topics.id_topic ORDER BY cantidad_posts DESC LIMIT 10',(error,results) =>{
         if(error){
             throw error
         }
@@ -62,7 +62,7 @@ const getTopicsWithMorePost = (request,response) => {
 }
 
 const getScoreFromTopic = (request,response) => {
-    pool.query('SELECT topics.id_topic,topics.topic_title, SUM(posts.post_score) AS scorePost FROM topics LEFT JOIN posts ON topics.id_topic = posts.id_topic GROUP BY topics.id_topic ORDER BY scorePost DESC',(error,results) =>{
+    pool.query('SELECT topics.id_topic,topics.topic_title, SUM(posts.post_score) AS scorePost FROM topics LEFT JOIN posts ON topics.id_topic = posts.id_topic GROUP BY topics.id_topic ORDER BY scorePost DESC LIMIT 10',(error,results) =>{
         if(error){
             throw error
         }
@@ -71,7 +71,7 @@ const getScoreFromTopic = (request,response) => {
 }
 
 const getScoreFromPost = (request,response) => {
-    pool.query('SELECT * FROM posts ORDER BY posts.post_score DESC',(error,results) =>{
+    pool.query('SELECT * FROM posts ORDER BY posts.post_score DESC LIMIT 10',(error,results) =>{
         if(error){
             throw error
         }
