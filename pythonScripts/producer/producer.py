@@ -13,10 +13,12 @@ reddit = praw.Reddit(client_id="MBLqAl5yrZENtA",
 
 producer = KafkaProducer(
    value_serializer=lambda m: dumps(m).encode('utf-8'), 
-   bootstrap_servers=["34.70.222.160:9091"])
+   bootstrap_servers=["35.202.48.205:9091"])
+
 
 comments = reddit.subreddit("all").stream.comments()
 
+producer.flush
 for comment in comments:
     #pprint(dir(submission))
     #pprint(dir(comment))
@@ -24,8 +26,7 @@ for comment in comments:
     
     if submission.is_video == False and detect(submission.title) == 'en':
         if comment.over_18 == False:
-
-            print('comment')            
+            print(str(submission.title))            
             producer.send('Temas', 
             value={
                 # Info de Comentarios
@@ -43,3 +44,4 @@ for comment in comments:
                 "subredditTitle" : str(comment.subreddit.title)     
             },
             partition=randrange(3))
+            
