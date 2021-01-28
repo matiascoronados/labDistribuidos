@@ -1,7 +1,6 @@
 from kafka import KafkaProducer
 from json import dumps
 import praw
-from pretty import pprint
 from langdetect import detect
 from random import randrange
 
@@ -14,7 +13,7 @@ reddit = praw.Reddit(client_id="MBLqAl5yrZENtA",
 
 producer = KafkaProducer(
    value_serializer=lambda m: dumps(m).encode('utf-8'), 
-   bootstrap_servers=["34.68.42.248:9091"])
+   bootstrap_servers=["34.70.222.160:9091"])
 
 comments = reddit.subreddit("all").stream.comments()
 
