@@ -23,7 +23,8 @@ def analysisScore(text):
     #print(promedio) 
     return promedio  
         
-    
+
+
 #nltk.download('punkt')
 #nltk.download('averaged_perceptron_tagger')
 #nltk.download('brown')
@@ -32,7 +33,10 @@ client = MongoClient('34.70.222.160', username='admin', password='canito123', au
 db = client["reddit"]#asi se accede a una bd
 collection = db["comments"]#asi se accede a una coleccion
 
+
+
 conn = psycopg2.connect(database='reddit', user='postgres',password='canito123', host='34.121.166.27', port= '55432');
+
 
 
 #Setting auto commit false
@@ -44,10 +48,13 @@ cursor = conn.cursor()
 dataDB = collection.find()
 
 
+cursor.execute("DELETE FROM comments");
+cursor.execute("DELETE FROM posts");
+cursor.execute("DELETE FROM topics");
+
 
 for comment in dataDB:
 
-    
     # Variables 
     sentimentValue = analysisScore(comment['stats'])
     topic_title = comment['subredditTitle'].replace("'","")[0:499]
