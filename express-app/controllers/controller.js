@@ -116,6 +116,15 @@ const getNegativeTopic = (request,response) => {
     })
 }
 
+const getAllPositiveAndNegativeComments = (request,response) => {
+    pool.query('SELECT (SELECT Count(*) AS comments_positivos FROM comments WHERE comments.sentiment_value > 0),(SELECT Count(*) AS comments_negativos FROM comments WHERE comments.sentiment_value < 0)',(error,results) =>{
+        if(error){
+            throw error
+        }
+        response.status(200).send(results);
+    })
+}
+
 
 //Exportar Funciones
 
@@ -131,5 +140,7 @@ module.exports={
     getPositivePost,
     getNegativePost,
     getPositiveTopic,
-    getNegativeTopic
+    getNegativeTopic,
+    getAllPositiveAndNegativeComments
+
 }

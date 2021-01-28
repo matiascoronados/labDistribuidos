@@ -14,7 +14,8 @@ const {
     getPositivePost,
     getNegativePost,
     getPositiveTopic,
-    getNegativeTopic
+    getNegativeTopic,
+    getAllPositiveAndNegativeComments
 } = require('../controllers/controller')
 
 router.get('/getAllComments',getAllComments)
@@ -29,6 +30,6 @@ router.get('/getPositivePost',getPositivePost)
 router.get('/getNegativePost',getNegativePost)
 router.get('/getPositiveTopic',getPositiveTopic)
 router.get('/getNegativeTopic',getNegativeTopic)
-
+router.get('/getAllPositiveAndNegativeComments',getAllPositiveAndNegativeComments)
 
 module.exports = router;
