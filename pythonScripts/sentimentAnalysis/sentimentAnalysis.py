@@ -66,7 +66,6 @@ for comment in dataDB:
     cursor.execute("SELECT EXISTS(SELECT 1 FROM topics WHERE topic_title='"+topic_title+"')")
     queryTopicExist = cursor.fetchone()[0]
 
-
     if(queryTopicExist):
         print("Si esta")
         cursor.execute("SELECT EXISTS(SELECT 1 FROM posts WHERE id_post='"+comment['post']['Id']+"')")
@@ -83,9 +82,12 @@ for comment in dataDB:
                     (comment['post']['Id'], id_topic, post_title, post_author, comment['post']['Score'], comment['post']['Link'], comment['post']['NumComments']))
 
         #Se agrega el comentario
-        cursor.execute("""INSERT INTO comments(id_comment, id_post, comment_author, comment_body, sentiment_value) 
-                VALUES (%s, %s, %s, %s, %s)""", 
-                (comment['id'], comment['post']['Id'], comment_author, comment_body, sentimentValue))
+        cursor.execute("SELECT EXISTS(SELECT 1 FROM comments WHERE id_comment='"+comment['id']+"')")
+        queryCommentExist = cursor.fetchone()[0]
+        if(not queryCommentExist):    
+            cursor.execute("""INSERT INTO comments(id_comment, id_post, comment_author, comment_body, sentiment_value) 
+                    VALUES (%s, %s, %s, %s, %s)""", 
+                    (comment['id'], comment['post']['Id'], comment_author, comment_body, sentimentValue))
 
     else:
         print("No esta")
