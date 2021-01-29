@@ -28,7 +28,7 @@ def analysisScore(text):
 #nltk.download('punkt')
 #nltk.download('averaged_perceptron_tagger')
 #nltk.download('brown')
-client = MongoClient('34.70.222.160', username='admin', password='canito123', authSource='reddit', authMechanism='SCRAM-SHA-1')#datos de conexion de bd
+client = MongoClient('35.202.48.205', username='admin', password='canito123', authSource='reddit', authMechanism='SCRAM-SHA-1')#datos de conexion de bd
 #client = MongoClient('mongodb://riruriru:riruriru@35.239.147.51:27017/?authSource=admin&readPreference=primary&ssl=false')
 db = client["reddit"]#asi se accede a una bd
 collection = db["comments"]#asi se accede a una coleccion
@@ -48,9 +48,9 @@ cursor = conn.cursor()
 dataDB = collection.find()
 
 
-cursor.execute("DELETE FROM comments");
-cursor.execute("DELETE FROM posts");
-cursor.execute("DELETE FROM topics");
+cursor.execute("DELETE FROM comments")
+cursor.execute("DELETE FROM posts")
+cursor.execute("DELETE FROM topics")
 
 
 for comment in dataDB:

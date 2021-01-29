@@ -126,6 +126,25 @@ const getAllPositiveAndNegativeComments = (request,response) => {
 }
 
 
+const getAllPositiveAndNegativePosts = (request,response) => {
+    pool.query('SELECT (SELECT COUNT(*) OVER() AS positivePost FROM posts,comments WHERE posts.id_post = comments.id_post GROUP BY posts.id_post HAVING AVG(comments.sentiment_value) >= 0 LIMIT 1),(SELECT COUNT(*) OVER() AS negativePost FROM posts,comments WHERE posts.id_post = comments.id_post GROUP BY posts.id_post HAVING AVG(comments.sentiment_value) < 0 LIMIT 1)',(error,results) =>{
+        if(error){
+            throw error
+        }
+        response.status(200).send(results);
+    })
+}
+
+const getAllPositiveAndNegativeTopics = (request,response) => {
+    pool.query('SELECT (SELECT COUNT(*)  OVER() AS positiveTopics FROM topics,posts,comments WHERE topics.id_topic = posts.id_topic AND posts.id_post = comments.id_post GROUP BY topics.id_topic HAVING AVG(comments.sentiment_value) >= 0 LIMIT 1),(SELECT COUNT(*) OVER() AS negativeTopics FROM topics,posts,comments WHERE topics.id_topic = posts.id_topic AND posts.id_post = comments.id_post GROUP BY topics.id_topic HAVING AVG(comments.sentiment_value) < 0 LIMIT 1)',(error,results) =>{
+        if(error){
+            throw error
+        }
+        response.status(200).send(results);
+    })
+}
+
+
 //Exportar Funciones
 
 module.exports={
@@ -141,6 +160,8 @@ module.exports={
     getNegativePost,
     getPositiveTopic,
     getNegativeTopic,
-    getAllPositiveAndNegativeComments
+    getAllPositiveAndNegativeComments,
+    getAllPositiveAndNegativePosts,
+    getAllPositiveAndNegativeTopics
 
 }
