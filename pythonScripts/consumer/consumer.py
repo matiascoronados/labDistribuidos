@@ -94,7 +94,7 @@ try:
                 "stopwords":count_stopwords,
                 "without_stops":text_without_stopword
             },
-            "revisado":False     
+            "revisado":0     
         })
 except expression as identifier:
     print('error')

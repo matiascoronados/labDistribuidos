@@ -54,7 +54,8 @@ cursor = conn.cursor()
 while True:
     dataDB = collection.find()
     for comment in dataDB:
-        if(comment['revisado'] == False):
+        print(comment['post']['Title'])
+        if(comment['revisado'] == 0):
             #print("ban")
             # Variables 
             sentimentValue = analysisScore(comment['stats'])
@@ -63,10 +64,8 @@ while True:
             post_author = comment['post']['Author'].replace("'","")[0:29]
             comment_author = comment['commentAuthor'].replace("'","")[0:29]
             comment_body = comment['commentBody'].replace("'","")[0:599]
-
             cursor.execute("SELECT EXISTS(SELECT 1 FROM topics WHERE topic_title='"+topic_title+"')")
             queryTopicExist = cursor.fetchone()[0]
-
 
             if(queryTopicExist):
                 #print("Si esta")
@@ -113,7 +112,7 @@ while True:
             collection.update({
             'id': comment['id']},
             {'$set':{
-                'revisado':True
+                'revisado':1
             }},upsert=False,multi=False)
     
     
