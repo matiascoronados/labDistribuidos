@@ -55,6 +55,7 @@ while True:
     dataDB = collection.find()
     for comment in dataDB:
         if(comment['revisado'] == False):
+            print("Nuevo")
             # Variables 
             sentimentValue = analysisScore(comment['stats'])
             topic_title = comment['subredditTitle'].replace("'","")[0:499]
@@ -68,7 +69,7 @@ while True:
 
 
             if(queryTopicExist):
-                print("Si esta")
+                #print("Si esta")
                 cursor.execute("SELECT EXISTS(SELECT 1 FROM posts WHERE id_post='"+comment['post']['Id']+"')")
                 queryPostExist = cursor.fetchone()[0]
 
@@ -82,13 +83,17 @@ while True:
                             VALUES (%s, %s, %s, %s, %s, %s, %s)""", 
                             (comment['post']['Id'], id_topic, post_title, post_author, comment['post']['Score'], comment['post']['Link'], comment['post']['NumComments']))
 
-                #Se agrega el comentario
-                cursor.execute("""INSERT INTO comments(id_comment, id_post, comment_author, comment_body, sentiment_value) 
-                        VALUES (%s, %s, %s, %s, %s)""", 
-                        (comment['id'], comment['post']['Id'], comment_author, comment_body, sentimentValue))
+                
+                cursor.execute("SELECT EXISTS(SELECT 1 FROM comments WHERE id_comment='"+comment['id']+"')")
+                queryCommentExist = cursor.fetchone()[0]
+                if(not queryCommentExist):
+                    #Se agrega el comentario
+                    cursor.execute("""INSERT INTO comments(id_comment, id_post, comment_author, comment_body, sentiment_value) 
+                            VALUES (%s, %s, %s, %s, %s)""", 
+                            (comment['id'], comment['post']['Id'], comment_author, comment_body, sentimentValue))
 
             else:
-                print("No esta")
+                #print("No esta")
 
                 # Insertar Topico
                 cursor.execute("INSERT INTO topics(id_topic,topic_title) VALUES (DEFAULT,'"+topic_title+"') RETURNING id_topic")

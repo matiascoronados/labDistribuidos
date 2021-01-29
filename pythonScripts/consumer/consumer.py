@@ -58,7 +58,6 @@ client = MongoClient('35.202.48.205:27017',authSource='reddit',username='admin',
 db = client["reddit"]
 commentsCollection = db["comments"]
 
-print("1")
 
 try:
     consumer = KafkaConsumer(
