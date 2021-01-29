@@ -55,7 +55,7 @@ while True:
     dataDB = collection.find()
     for comment in dataDB:
         if(comment['revisado'] == False):
-            print("Nuevo")
+            #print("ban")
             # Variables 
             sentimentValue = analysisScore(comment['stats'])
             topic_title = comment['subredditTitle'].replace("'","")[0:499]
@@ -91,6 +91,7 @@ while True:
                     cursor.execute("""INSERT INTO comments(id_comment, id_post, comment_author, comment_body, sentiment_value) 
                             VALUES (%s, %s, %s, %s, %s)""", 
                             (comment['id'], comment['post']['Id'], comment_author, comment_body, sentimentValue))
+                    print("Nuevo Comentario")
 
             else:
                 #print("No esta")
@@ -114,6 +115,8 @@ while True:
             {'$set':{
                 'revisado':True
             }},upsert=False,multi=False)
+    
+    
     time.sleep(2)
 cursor.close()
 conn.close()
