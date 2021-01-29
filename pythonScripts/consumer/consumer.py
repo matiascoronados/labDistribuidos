@@ -94,7 +94,8 @@ try:
                 "consonants":consonant,
                 "stopwords":count_stopwords,
                 "without_stops":text_without_stopword
-            },     
+            },
+            "revisado":False     
         })
 except expression as identifier:
     print('error')
