@@ -2,7 +2,7 @@ const { Pool } = require('pg')
 const { response } = require('express');
 
 const pool = new Pool({
-    host: '34.121.166.27',
+    host: '35.224.174.197',
     user: 'postgres',
     password:'canito123',
     database: 'reddit',
@@ -145,6 +145,16 @@ const getAllPositiveAndNegativeTopics = (request,response) => {
 }
 
 
+const getCommentStats = (request,response) => {
+    pool.query('SELECT * FROM topics,posts,comments WHERE topics.id_topic = posts.id_topic AND posts.id_post = comments.id_post ORDER BY comments.sentiment_value DESC LIMIT 15',(error,results) =>{
+        if(error){
+            throw error
+        }
+        response.status(200).send(results);
+    })
+}
+
+
 //Exportar Funciones
 
 module.exports={
@@ -162,6 +172,6 @@ module.exports={
     getNegativeTopic,
     getAllPositiveAndNegativeComments,
     getAllPositiveAndNegativePosts,
-    getAllPositiveAndNegativeTopics
-
+    getAllPositiveAndNegativeTopics,
+    getCommentStats
 }
