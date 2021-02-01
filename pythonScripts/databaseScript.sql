@@ -30,6 +30,12 @@ CREATE TABLE comments(
     comment_author VARCHAR(30) NOT NULL,
     comment_body VARCHAR(600) NOT NULL,
     sentiment_value DECIMAL,
+    uppercase INT,
+    lowercase INT,
+    words INT,
+    vocals INT,
+    consonants INT,
+    stopwords INT,
     CONSTRAINT fk_post
         FOREIGN KEY(id_post) 
             REFERENCES posts(id_post)

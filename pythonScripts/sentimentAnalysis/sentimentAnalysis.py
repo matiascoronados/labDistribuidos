@@ -38,7 +38,7 @@ client = MongoClient('35.202.48.205', username='admin', password='canito123', au
 db = client["reddit"]#asi se accede a una bd
 collection = db["comments"]#asi se accede a una coleccion
 
-conn = psycopg2.connect(database='reddit', user='postgres',password='canito123', host='34.121.166.27', port= '55432');
+conn = psycopg2.connect(database='reddit', user='postgres',password='canito123', host='35.224.174.197', port= '55432');
 
 #Setting auto commit false
 conn.autocommit = True
@@ -54,7 +54,6 @@ cursor = conn.cursor()
 while True:
     dataDB = collection.find()
     for comment in dataDB:
-        print(comment['post']['Title'])
         if(comment['revisado'] == 0):
             #print("ban")
             # Variables 
@@ -87,10 +86,9 @@ while True:
                 queryCommentExist = cursor.fetchone()[0]
                 if(not queryCommentExist):
                     #Se agrega el comentario
-                    cursor.execute("""INSERT INTO comments(id_comment, id_post, comment_author, comment_body, sentiment_value) 
-                            VALUES (%s, %s, %s, %s, %s)""", 
-                            (comment['id'], comment['post']['Id'], comment_author, comment_body, sentimentValue))
-                    print("Nuevo Comentario")
+                    cursor.execute("""INSERT INTO comments(id_comment, id_post, comment_author, comment_body, sentiment_value, uppercase, lowercase, words, vocals, consonants, stopwords) 
+                            VALUES (%s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s)""", 
+                            (comment['id'], comment['post']['Id'], comment_author, comment_body, sentimentValue, int(comment['stats']['uppercase']), int(comment['stats']['lowercase']),int(comment['stats']['words']),int(comment['stats']['vocals']),int(comment['stats']['consonants']),int(comment['stats']['stopwords'])))
 
             else:
                 #print("No esta")
@@ -105,9 +103,9 @@ while True:
                         (comment['post']['Id'], id_topic, post_title, post_author, comment['post']['Score'], comment['post']['Link'], comment['post']['NumComments']))
 
                 # Insertar Comentario
-                cursor.execute("""INSERT INTO comments(id_comment, id_post, comment_author, comment_body, sentiment_value) 
-                        VALUES (%s, %s, %s, %s, %s)""", 
-                        (comment['id'], comment['post']['Id'], comment_author, comment_body, sentimentValue))
+                cursor.execute("""INSERT INTO comments(id_comment, id_post, comment_author, comment_body, sentiment_value, uppercase, lowercase, words, vocals, consonants, stopwords) 
+                        VALUES (%s, %s, %s, %s, %s, %s,%s,%s,%s,%s,%s)""", 
+                        (comment['id'], comment['post']['Id'], comment_author, comment_body, sentimentValue,int(comment['stats']['uppercase']), int(comment['stats']['lowercase']),int(comment['stats']['words']),int(comment['stats']['vocals']),int(comment['stats']['consonants']),int(comment['stats']['stopwords'])))
 
             collection.update({
             'id': comment['id']},
