@@ -35,7 +35,7 @@ export default {
     },
     methods:{
         getChartData(){
-            const url = 'http://35.224.174.197:3000/getNegativePost'
+            const url = 'http://34.72.32.60:3000/getNegativePost'
             axios.get(url).then(response=>{
                 this.data = response.data["rows"]
                 //prepare x axis

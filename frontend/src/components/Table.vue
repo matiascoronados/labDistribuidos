@@ -41,7 +41,7 @@ import axios from 'axios'
         },
         methods:{
             getData(){
-                const url = 'http://localhost:3000/getCommentStats'
+                const url = 'http://34.72.32.60:3000/getCommentStats'
                 axios.get(url).then(response=>{
                     this.apiData = response.data["rows"]
 
