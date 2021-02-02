@@ -8,13 +8,13 @@
             </b-navbar-item>
         </template>
         <template #start>
-            <b-navbar-item router-link href="/">
+            <b-navbar-item tag="router-link" to="/">
                 Home
             </b-navbar-item>
-            <b-navbar-item router-link href="/topics">
+            <b-navbar-item tag="router-link" to="/topics">
                 Topicos
             </b-navbar-item>
-            <b-navbar-item router-link href="/posts">
+            <b-navbar-item tag="router-link" to="/posts">
                 Posts
             </b-navbar-item>
         </template>
