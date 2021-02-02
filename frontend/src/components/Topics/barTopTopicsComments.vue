@@ -35,7 +35,7 @@ data(){
   },
   methods:{
     getChartData(){
-      const url = 'http://34.72.210.185:3000/getTopicsWithMoreComments'
+      const url = 'http://35.224.174.197:3000/getTopicsWithMoreComments'
       axios.get(url).then(response=>{
         
         this.data = response.data["rows"]

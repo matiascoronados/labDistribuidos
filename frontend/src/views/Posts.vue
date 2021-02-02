@@ -1,37 +1,41 @@
 <template>
-<div class="container">
-    <div class="columns is-mobile">
-        <div class="column is-three-fifths is-offset-one-fifth">
+<div class="container" style="margin-top:15px;">
+    
+    <div class="columns">
+        <div class="column">
             
-            <div class="card">
+            <div class="card" style="padding:20px;">
                 <h4>Post más Comentados</h4>
                 <bar-top-post-comments/>
             </div>
         </div>
-        
-        
-    </div>
-    <div class="column is-three-fifths is-offset-one-fifth">
-            
-            <div class="card">
+        <div class="column ">   
+            <div class="card" style="padding:20px;">
                 <h4>Top Score de Posts</h4>
                 <post-score/>
             </div>
-        </div>
-    <div class="column is-three-fifths is-offset-one-fifth">
-            
-            <div class="card">
+         </div>   
+        
+    </div>
+    <div class="columns" >
+         <div class="column">   
+            <div class="card" style="padding:20px;">
                 <h4>Positividad de Post</h4>
                 <positive-posts/>
             </div>
         </div>
-    <div class="column is-three-fifths is-offset-one-fifth">
+        <div class="column">
             
-            <div class="card">
+            <div class="card" style="padding:20px;">
                 <h4>Negatividad de Post</h4>
                 <negative-posts/>
             </div>
         </div>
+    </div>
+    
+
+    
+    
 </div>
 </template>
 

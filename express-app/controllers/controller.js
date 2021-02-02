@@ -146,7 +146,7 @@ const getAllPositiveAndNegativeTopics = (request,response) => {
 
 
 const getCommentStats = (request,response) => {
-    pool.query('SELECT * FROM topics,posts,comments WHERE topics.id_topic = posts.id_topic AND posts.id_post = comments.id_post ORDER BY comments.sentiment_value DESC LIMIT 15',(error,results) =>{
+    pool.query('SELECT * FROM topics,posts,comments WHERE topics.id_topic = posts.id_topic AND posts.id_post = comments.id_post ORDER BY comments.sentiment_value DESC LIMIT 50',(error,results) =>{
         if(error){
             throw error
         }

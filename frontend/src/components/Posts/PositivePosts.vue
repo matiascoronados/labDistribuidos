@@ -1,5 +1,5 @@
 <template>
-    <apexchart ref="positivetopics" width="600" type="bar" :options="options" :series="series"></apexchart>
+    <apexchart ref="positivetopics" width="500" type="bar" :options="options" :series="series"></apexchart>
 </template>
 <script>
 import axios from 'axios'
@@ -35,7 +35,7 @@ export default {
     },
     methods:{
         getChartData(){
-            const url = 'http://34.72.210.185:3000/getPositivePost'
+            const url = 'http://35.224.174.197:3000/getPositivePost'
             axios.get(url).then(response=>{
                 this.data = response.data["rows"]
                 //prepare x axis
@@ -48,7 +48,7 @@ export default {
                 })
                 console.log(series)
                 this.$refs.positivetopics.updateSeries([{
-                name:'Score',
+                name:'Positividad',
                 data: series
                 }])
             })

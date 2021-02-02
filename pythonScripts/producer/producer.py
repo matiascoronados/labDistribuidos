@@ -22,6 +22,7 @@ producer.flush
 for comment in comments:
     #pprint(dir(submission))
     #pprint(dir(comment))
+    
     submission = comment.submission
     
     if submission.is_video == False and detect(submission.title) == 'en':

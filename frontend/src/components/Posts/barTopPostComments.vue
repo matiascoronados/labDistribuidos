@@ -1,6 +1,6 @@
 <template>
   <div>
-  <apexchart ref="topcomments" width="600" type="bar" :options="options" :series="series"></apexchart>
+  <apexchart ref="topcomments" width="500" type="bar" :options="options" :series="series"></apexchart>
   </div>
 </template>
 <script>
@@ -35,7 +35,7 @@ data(){
   },
   methods:{
     getChartData(){
-      const url = 'http://34.72.210.185:3000/getPostsWithMoreComments'
+      const url = 'http://35.224.174.197:3000/getPostsWithMoreComments'
       axios.get(url).then(response=>{
         
         this.data = response.data["rows"]

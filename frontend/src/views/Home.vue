@@ -1,18 +1,37 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+<div class="container">
+  <div class="columns">
+    <div class="column">
+      <h2>Topicos</h2>
+      <pie-topics/>
+    </div>
+    <div class="column">
+        <h2>Posts</h2>
+        <pie-posts/>
+      </div>
+    <div class="column">
+      <h2> Comentarios</h2>
+      <pie-comments/>
+    </div>
+  </div>  
+  
+  <div class="columns">
+    
   </div>
+      <Table/>
+  
+</div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import PieComments from '../components/PieComments.vue'
+import PiePosts from '../components/PiePosts.vue'
+import PieTopics from '../components/PieTopics.vue'
+import Table from '../components/Table.vue'
+
 
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
+  components: { PiePosts, PieTopics, PieComments,Table },
+
 }
 </script>
